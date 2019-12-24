@@ -94,13 +94,3 @@ dependencyManagement {
 bootRun {
     environment SPRING_PROFILES_ACTIVE: environment.SPRING_PROFILES_ACTIVE ?: "local"
 }
-
-docker {
-    dependsOn clean
-    dependsOn bootJar
-    name "boot/${jar.archiveBaseName.get()}"
-    tag "${project.name}", "boot/${jar.archiveBaseName.get()}:${project.version}"
-    files jar.archiveFile.get()
-    dockerfile file('Dockerfile')
-    buildArgs(['ARTIFACT': "${jar.archiveFileName.get()}"])
-}
