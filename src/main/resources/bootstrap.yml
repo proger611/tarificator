@@ -1,0 +1,75 @@
+server:
+  servlet:
+    context-path: /tarificator
+---
+spring:
+  application:
+    name: crm-facade-soap
+  main:
+    banner-mode: "off"
+  profiles:
+    active: ${info.zone}
+info:
+  app: ${spring.application.name}
+  zone: ${INFO_ZONE:develop}
+logging:
+  path: ${LOGS_PATH:applogs}
+  file: ${logging.path}/${spring.application.name}.log
+---
+spring:
+  profiles: local,develop,stage,prod
+  cloud:
+    config:
+      name: ${spring.application.name}
+      discovery:
+        enabled: true
+        service-id: config-server
+      fail-fast: true
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URL}
+---
+spring:
+  profiles: test
+  cloud:
+    kubernetes:
+      reload:
+        enabled: true
+        mode: polling
+        period: 15000
+      config:
+        sources:
+          - name: application
+          - name: ${spring.application.name}
+          - namespace: development
+---
+spring:
+  profiles: staging
+  cloud:
+    kubernetes:
+      reload:
+        enabled: true
+        mode: polling
+        period: 15000
+      config:
+        sources:
+          - name: application
+          - name: ${spring.application.name}
+          - namespace: stage
+---
+spring:
+  profiles: production
+  cloud:
+    kubernetes:
+      reload:
+        enabled: true
+        mode: polling
+        period: 15000
+      config:
+        sources:
+          - name: application
+          - name: ${spring.application.name}-${CONFIG_VERSION}
+          - namespace: rit
