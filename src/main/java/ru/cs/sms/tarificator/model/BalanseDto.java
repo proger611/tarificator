@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 public class BalanseDto {
     private String userId;
     private Integer sendBalanse;
+    private Integer overBalanse;
     private Integer payBalanse;
     private Integer infoBalanse;
     private Integer callBalanse;
