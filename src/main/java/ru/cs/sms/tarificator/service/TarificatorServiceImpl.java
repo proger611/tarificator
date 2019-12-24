@@ -9,9 +9,9 @@ import ru.cs.sms.tarificator.client.DbAdapter;
 @RequiredArgsConstructor
 public class TarificatorServiceImpl implements TarificatorService {
 
-    private final ru.cs.sms.tarificator.client.DbAdapter DbAdapter;
+    private final DbAdapter dbAdapter;
 
-    @Scheduled(fixedDelayString = "{fixidDelay:60000}")
+    @Scheduled(fixedDelayString = "${timeout:60000}")
     @Override
     public void tarificate() {
 
